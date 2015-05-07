@@ -1,3 +1,7 @@
+import redis
+import Settings
+from KeyValuePair import KeyValuePair
+
 class KeyValueService():
 	"""
 	"""
@@ -6,22 +10,26 @@ class KeyValueService():
 		"""
 		Create a new Key Value Pair
 		"""
-		pass
+		self.redis_server = redis.StrictRedis(host=Settings.redis_server, port=Settings.redis_port, db=Settings.redis_db)
 
-	@staticmethod
-	def get_key(key):
+	def get_key(self, key):
 		"""
 		Looks up the key pair value by key and returns it.
 		:param key: the key to retrieve
 		:return: the key value pair
 		"""
-		return {"1234":"A blob o text"}
+		value = self.redis_server.get(key)
+		if not value:
+			return None
 
-	@staticmethod
-	def create(key_value_pair):
+		return KeyValuePair(key, value)
+
+
+	def create(self, key_value_pair):
 		"""
 		Create a key value pair and return the key
 		:param key_value_pair: the kvp to create.
 		:return: the key of the key value pair
 		"""
-		return "1234"
+		self.redis_server.set(key_value_pair.key, key_value_pair.value)
+		return key_value_pair.key

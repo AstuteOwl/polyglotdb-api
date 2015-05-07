@@ -1,6 +1,7 @@
 import falcon
 import json
 from KeyValueService import KeyValueService
+from KeyValuePair import KeyValuePair
 
 
 class Resource(object):
@@ -16,9 +17,10 @@ class Resource(object):
 		if not key:
 			raise falcon.HTTPMethodNotAllowed({'PUT'})
 
-		key = KeyValueService.get_key(key=key)
+		service = KeyValueService()
+		key = service.get_key(key=key)
 		if key:
-			resp.body = json.dumps(key)
+			resp.body = json.dumps(key.to_dict())
 			resp.status = falcon.HTTP_200
 		else:
 			resp.status = falcon.HTTP_404
@@ -45,8 +47,10 @@ class Resource(object):
 									'Malformed JSON',
 									'Could not decode the request body. The '
 									'JSON was incorrect.')
+		key, value = key_value_pair.popitem()
+		kvp = KeyValuePair(key, value)
+		service = KeyValueService()
+		key = service.create(kvp)
 
-		key = KeyValueService.create(key_value_pair)
-
-		resp.location = '/kv/' + key
+		resp.location = '/kv/' + str(key)
 		resp.status = falcon.HTTP_201
