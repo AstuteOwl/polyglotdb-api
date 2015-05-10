@@ -1,10 +1,12 @@
 import falcon
 from wsgiref import simple_server
 import KeyValue
+import Document
 
 api = application = falcon.API()
 
 keyValue = KeyValue.Resource()
+document = Document.Resource()
 
 api.add_route('/kv/{key}', keyValue)
 api.add_route('/kv', keyValue)
