@@ -19,7 +19,7 @@ class Resource(object):
 		service = DocumentService()
 		document = service.get_document(identifier)
 		if document:
-			resp.body = json.dumps(document.to_dict())
+			resp.body = json.dumps(document)
 			resp.status = falcon.HTTP_200
 		else:
 			resp.status = falcon.HTTP_404
