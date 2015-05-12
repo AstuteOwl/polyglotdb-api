@@ -18,10 +18,9 @@ if [ ! -d "apienv" ]; then
     virtualenv apienv
 fi
 
-echo "Installing dependencies for project now..."
-pip install -r requirements.txt
-
-
 #activate the local virtualenv
 echo "Activating virtualenv for project now..."
 source apienv/bin/activate
+
+echo "Installing dependencies for project now..."
+pip install -r requirements.txt
