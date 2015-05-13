@@ -1,5 +1,7 @@
 #!/bin/bash
 
+[[ $_ != $0 ]] || printf "\n\t**Protip: Run script with $ source $0 for the virtualenv to persist\n\n"
+
 #The purpose of this script is to setup virtualenv for the project.
 #Check for pip
 echo "Checking for pip installation..."
